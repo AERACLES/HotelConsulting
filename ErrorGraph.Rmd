@@ -103,6 +103,7 @@ mod = bind_rows(mod,new)
 mod$pred <- model.func(mod$arrival_date)
 mod$residual <- mod$avg_adr-mod$pred
 
+
 resid <- remove_missing(mod,na.rm=TRUE,vars = names(mod))
 resid$r2 <- resid$residual^2
 RMSError <- sqrt(mean(resid$r2))
@@ -117,6 +118,6 @@ ggplot()+
   geom_smooth(mapping=aes(x=mod$arrival_date,y=mod$RMSUpperBound),xseq=793:1577,se=FALSE,color="red",linetype=2,alpha=.25)+
   geom_smooth(mapping=aes(x=mod$arrival_date,y=mod$RMSLowerBound),xseq=793:1577,se=FALSE,color="red",linetype=2,alpha=.25)
 
-
-
+ggplot()+theme_classic(
+)+ggtitle("Accuracy of Predicted Curve")+ylab("Average ADR")+xlab("Arrival Date")+geom_area(mapping=aes(x=resid$arrival_date,y=resid$residual),fill="red")+geom_hline(yintercept = RMSError,linetype=2)
 ```
